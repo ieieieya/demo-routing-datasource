@@ -12,7 +12,6 @@ import java.util.List;
  * @author Chenxing Li
  * @date 18/07/2017 20:49
  */
-@Repository
 public interface ChatMessageRepository extends CrudRepository<ChatMessage, String> {
 
     List<ChatMessage> findByTenantIdOrderByCreatedAtDesc(Integer tenantId);

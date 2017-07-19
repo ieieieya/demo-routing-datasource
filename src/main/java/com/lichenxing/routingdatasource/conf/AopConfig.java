@@ -2,6 +2,7 @@ package com.lichenxing.routingdatasource.conf;
 
 import com.lichenxing.routingdatasource.annotation.ShardOn;
 import com.lichenxing.routingdatasource.datasource.MultipleDataSource;
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 
 /**
@@ -37,33 +39,39 @@ public class AopConfig {
     public Object logServiceAccess(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info("Start: " + joinPoint);
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-//        Annotation[][] parameterAnnotations = signature.getMethod().getParameterAnnotations();
-//        if (parameterAnnotations != null) {
-//            boolean find = false;
-//            for (Annotation[] arr : parameterAnnotations) {
-//                int index = 0;
-//                for (Annotation annotation : arr) {
-//                    if (ShardOn.class.equals(annotation.annotationType())) {
-//                        find = true;
-//                        break;
-//                    }
-//                    index++;
-//                }
-//                if (find) {
-//                    log.info("Find! index:{}", index);
-//                    Object o = joinPoint.getArgs()[index];
-//                    log.info("Find! index:{} value:{}", index, o);
-//                    if (o != null && o instanceof Integer) {
-//                        Integer tenantId = (Integer) o;
-//                        ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-        Object[] args = joinPoint.getArgs();
-        Integer tenantId = (Integer) args[0];
-        ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
+        Annotation[][] parameterAnnotations = signature.getMethod().getParameterAnnotations();
+        if (parameterAnnotations != null) {
+            boolean find = false;
+            for (Annotation[] arr : parameterAnnotations) {
+                int index = 0;
+                String fieldName = null;
+                for (Annotation annotation : arr) {
+                    if (ShardOn.class.equals(annotation.annotationType())) {
+                        ShardOn shardOn = (ShardOn) annotation;
+                        fieldName = shardOn.value();
+                        find = true;
+                        break;
+                    }
+                    index++;
+                }
+                if (find) {
+                    log.info("ShardOn found index:{}", index);
+                    Object o = joinPoint.getArgs()[index];
+                    if (o != null && StringUtils.isNotBlank(fieldName)) {
+                        log.info("ShardOn found with fieldName index:{} fieldName:{}", index, fieldName);
+                        Field field = o.getClass().getDeclaredField(fieldName);
+                        Integer tenantId = field.getInt(o);
+                        log.info("ShardOn found with fieldName index:{} fieldName:{} tenantId:{}", index, fieldName, tenantId);
+                        ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
+                    } else if (o != null && o instanceof Integer) {
+                        log.info("ShardOn found index:{} value:{}", index, o);
+                        Integer tenantId = (Integer) o;
+                        ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
+                    }
+                    break;
+                }
+            }
+        }
         Object result = joinPoint.proceed();
         log.info("Complete: " + joinPoint);
         return result;
