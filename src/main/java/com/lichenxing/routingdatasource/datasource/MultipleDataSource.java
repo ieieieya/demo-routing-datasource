@@ -28,6 +28,7 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
         if (key == null) {
             return null;
         }
+        // TODO 这里的3是需要搞成自动配置的
         return key % 3;
     }
 

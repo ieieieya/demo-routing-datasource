@@ -5,6 +5,7 @@ import com.lichenxing.routingdatasource.jpa.ChatMessageRepository;
 import com.lichenxing.routingdatasource.routing.domain.RoutingChatMessage;
 import com.lichenxing.routingdatasource.routing.jpa.RoutingChatMessageRepository;
 import com.lichenxing.routingdatasource.utils.JSONUtil;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,33 @@ public class RoutingChatMessageController {
         chatMessage.setUpdatedAt(new Date());
         routingChatMessageRepository.save(chatMessage);
         return chatMessage;
+    }
+
+    @Data
+    public static class ChatMessageUpdateBody {
+
+        private String body;
+
+    }
+
+    @RequestMapping(value = "/v5/{tenantId}/routing-messages/{msgId}", method = RequestMethod.PUT)
+    public Object updateMessages(@PathVariable("tenantId") Integer tenantId,
+                                 @PathVariable("msgId") String msgId,
+                                 @RequestBody ChatMessageUpdateBody updateBody) {
+        log.info("PUT /v5/{}/routing-messages/{} body:{}", tenantId, msgId, JSONUtil.mapToJsonString(updateBody));
+        RoutingChatMessage chatMessage = routingChatMessageRepository.findByTenantIdAndMsgId(tenantId, msgId);
+        chatMessage.setBody(updateBody.getBody());
+        chatMessage.setUpdatedAt(new Date());
+        routingChatMessageRepository.save(chatMessage);
+        return chatMessage;
+    }
+
+    @RequestMapping(value = "/v5/{tenantId}/routing-messages/{msgId}", method = RequestMethod.DELETE)
+    public Object deleteMessages(@PathVariable("tenantId") Integer tenantId,
+                                 @PathVariable("msgId") String msgId) {
+        log.info("DELETE /v5/{}/routing-messages/{}", tenantId, msgId);
+        routingChatMessageRepository.deleteByTenantIdAndMsgId(tenantId, msgId);
+        return "OK";
     }
 
 }

@@ -60,7 +60,8 @@ public class AopConfig {
                     if (o != null && StringUtils.isNotBlank(fieldName)) {
                         log.info("ShardOn found with fieldName index:{} fieldName:{}", index, fieldName);
                         Field field = o.getClass().getDeclaredField(fieldName);
-                        Integer tenantId = field.getInt(o);
+                        field.setAccessible(true);
+                        Integer tenantId = (Integer) field.get(o);
                         log.info("ShardOn found with fieldName index:{} fieldName:{} tenantId:{}", index, fieldName, tenantId);
                         ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
                     } else if (o != null && o instanceof Integer) {
@@ -70,6 +71,10 @@ public class AopConfig {
                     }
                     break;
                 }
+            }
+            if (!find) {
+                log.error("ShardOn Annotation needed!!!" + joinPoint);
+                throw new IllegalArgumentException("ShardOn Annotation needed!!!");
             }
         }
         Object result = joinPoint.proceed();

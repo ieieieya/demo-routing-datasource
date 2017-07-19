@@ -75,6 +75,7 @@ public class DataSourceConfig {
         Map<Object, Object> targetDataSources = new HashMap<>();
         // 必须设置上defaultTargetSource，否则没有routingKey的时候会初始化失败
         // 给不同的routingKey设置数据源
+        // TODO 这里应该可以自动生成，而不是写死
         targetDataSources.put(0, routing1DataSource);
         targetDataSources.put(1, routing2DataSource);
         targetDataSources.put(2, routing3DataSource);
