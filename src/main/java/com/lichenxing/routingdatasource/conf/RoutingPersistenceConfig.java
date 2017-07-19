@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -57,6 +59,16 @@ public class RoutingPersistenceConfig {
         entityManagerFactoryBean.setPackagesToScan(RoutingChatMessage.class.getPackage().getName());
         entityManagerFactoryBean.getJpaPropertyMap().putAll(routingJpaProperties.getProperties());
         return entityManagerFactoryBean;
+    }
+
+    @Bean
+    public JdbcTemplate routingJdbcTemplate(DataSource routingDataSource) {
+        return new JdbcTemplate(routingDataSource);
+    }
+
+    @Bean
+    public NamedParameterJdbcTemplate routingNamedParameterJdbcTemplate(DataSource routingDataSource) {
+        return new NamedParameterJdbcTemplate(routingDataSource);
     }
 
 }

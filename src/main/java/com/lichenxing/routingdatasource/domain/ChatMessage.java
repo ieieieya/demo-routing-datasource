@@ -1,5 +1,6 @@
 package com.lichenxing.routingdatasource.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -29,9 +30,11 @@ public class ChatMessage {
     @Column(name = "body")
     private String body;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")
     @Column(name = "updatedAt")
     private Date updatedAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")
     @Column(name = "createdAt")
     private Date createdAt;
 

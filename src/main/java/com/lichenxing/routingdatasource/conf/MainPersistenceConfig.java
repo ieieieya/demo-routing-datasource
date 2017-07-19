@@ -2,12 +2,17 @@ package com.lichenxing.routingdatasource.conf;
 
 import com.lichenxing.routingdatasource.domain.ChatMessage;
 import com.lichenxing.routingdatasource.jpa.ChatMessageRepository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -30,20 +35,18 @@ import javax.sql.DataSource;
 public class MainPersistenceConfig {
 
     @Bean
-//    @Primary
+    @Primary
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
     @Bean
-//    @Primary
     @ConfigurationProperties(prefix = "spring.jpa")
     public JpaProperties jpaProperties() {
         return new JpaProperties();
     }
 
     @Bean
-//    @Primary
     public JpaVendorAdapter jpaVendorAdapter(JpaProperties jpaProperties) {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(jpaProperties.isShowSql());
@@ -54,7 +57,6 @@ public class MainPersistenceConfig {
     }
 
     @Bean
-//    @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(JpaVendorAdapter jpaVendorAdapter, JpaProperties jpaProperties, DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
@@ -62,6 +64,16 @@ public class MainPersistenceConfig {
         entityManagerFactoryBean.setPackagesToScan(ChatMessage.class.getPackage().getName());
         entityManagerFactoryBean.getJpaPropertyMap().putAll(jpaProperties.getProperties());
         return entityManagerFactoryBean;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
+        return new NamedParameterJdbcTemplate(dataSource);
     }
 
 }
