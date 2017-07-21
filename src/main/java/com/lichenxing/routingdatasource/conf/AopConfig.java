@@ -3,22 +3,20 @@ package com.lichenxing.routingdatasource.conf;
 import com.lichenxing.routingdatasource.annotation.ShardOn;
 import com.lichenxing.routingdatasource.datasource.MultipleDataSource;
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
 
 /**
  * AopConfig
@@ -27,15 +25,17 @@ import java.lang.reflect.Parameter;
  * @date 19/07/2017 01:06
  */
 @Aspect
-@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@Configuration
 public class AopConfig {
 
     private static Logger log = LoggerFactory.getLogger(AopConfig.class);
 
+
     @Autowired
     private DataSource routingDataSource;
 
-    @Around("execution(* com.lichenxing.routingdatasource.routing.jpa.*.*(..))")
+    @Around("execution(* com.lichenxing.routingdatasource.service.RoutingChatMessageService.*(..))")
     public Object logServiceAccess(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info("Start: " + joinPoint);
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

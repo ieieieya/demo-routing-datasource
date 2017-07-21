@@ -3,6 +3,8 @@ package com.lichenxing.routingdatasource.datasource;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import java.math.BigInteger;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -25,6 +27,7 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         Integer key = dataSourceKey.get();
+        logger.info("get current lookup key " + key);
         if (key == null) {
             return null;
         }
@@ -33,6 +36,16 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
     }
 
     public void setDataSourceKey(Integer tenantId) {
+        logger.info("set current lookup key " + tenantId);
         this.dataSourceKey.set(tenantId);
     }
+
+
+    @Override
+    public Connection getConnection() throws SQLException {
+        logger.info("getting connection");
+        Connection connection = super.getConnection();
+        return connection;
+    }
 }
+

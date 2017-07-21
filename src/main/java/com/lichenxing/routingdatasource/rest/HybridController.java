@@ -46,4 +46,5 @@ public class HybridController {
         hybridService.save3(tenantId, body.getBody());
         return "OK";
     }
+
 }
