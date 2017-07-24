@@ -63,11 +63,11 @@ public class AopConfig {
                         field.setAccessible(true);
                         Integer tenantId = (Integer) field.get(o);
                         log.info("ShardOn found with fieldName index:{} fieldName:{} tenantId:{}", index, fieldName, tenantId);
-                        ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
+                        ((MultipleDataSource) routingDataSource).setDataSourceKey(false, tenantId);
                     } else if (o != null && o instanceof Integer) {
                         log.info("ShardOn found index:{} value:{}", index, o);
                         Integer tenantId = (Integer) o;
-                        ((MultipleDataSource) routingDataSource).setDataSourceKey(tenantId);
+                        ((MultipleDataSource) routingDataSource).setDataSourceKey(false, tenantId);
                     }
                     break;
                 }

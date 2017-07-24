@@ -26,7 +26,6 @@ public class DataSourceConfig {
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource")
     public DataSource dataSource() {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }
@@ -38,7 +37,6 @@ public class DataSourceConfig {
     }
 
     @Bean
-    @ConfigurationProperties("routing-1.spring.datasource")
     public DataSource routing1DataSource() {
         return routing1DataSourceProperties().initializeDataSourceBuilder().build();
     }
@@ -50,7 +48,6 @@ public class DataSourceConfig {
     }
 
     @Bean
-    @ConfigurationProperties("routing-2.spring.datasource")
     public DataSource routing2DataSource() {
         return routing2DataSourceProperties().initializeDataSourceBuilder().build();
     }
@@ -62,7 +59,6 @@ public class DataSourceConfig {
     }
 
     @Bean
-    @ConfigurationProperties("routing-3.spring.datasource")
     public DataSource routing3DataSource() {
         return routing3DataSourceProperties().initializeDataSourceBuilder().build();
     }
@@ -73,10 +69,10 @@ public class DataSourceConfig {
         // 必须设置上defaultTargetSource，否则没有routingKey的时候会初始化失败
         // 给不同的routingKey设置数据源
         // TODO 这里应该可以自动生成，而不是写死
-        targetDataSources.put(0, routing1DataSource);
-        targetDataSources.put(1, routing2DataSource);
-        targetDataSources.put(2, routing3DataSource);
-        return new MultipleDataSource(dataSource, targetDataSources);
+        targetDataSources.put("w_0", routing1DataSource);
+        targetDataSources.put("w_1", routing2DataSource);
+        targetDataSources.put("w_2", routing3DataSource);
+        return new MultipleDataSource(3, dataSource, targetDataSources);
     }
 
 

@@ -15,28 +15,29 @@ import java.util.Map;
 
 public class MultipleDataSource extends AbstractRoutingDataSource {
 
-    private ThreadLocal<Integer> dataSourceKey = new ThreadLocal<>();
+    private ThreadLocal<DataSourceKey> dataSourceKey = new ThreadLocal<>();
+    private final Integer dbShardNum;
 
-    public MultipleDataSource(Object defaultTargetDataSource, Map<Object, Object> targetDataSources) {
+    public MultipleDataSource(Integer dbShardNum, Object defaultTargetDataSource, Map<Object, Object> targetDataSources) {
         super();
+        this.dbShardNum = dbShardNum;
         setDefaultTargetDataSource(defaultTargetDataSource);
         setTargetDataSources(targetDataSources);
     }
 
     @Override
     protected Object determineCurrentLookupKey() {
-        Integer key = dataSourceKey.get();
-        logger.info("get current lookup key " + key);
+        DataSourceKey key = dataSourceKey.get();
         if (key == null) {
             return null;
         }
-        // TODO 这里的3是需要搞成自动配置的 还要支持读写分离
-        return key % 3;
+        long remainder = key.getShardKey() % dbShardNum;
+        return key.isReadOnly() ? "r_" + remainder : "w_" + remainder;
     }
 
-    public void setDataSourceKey(Integer tenantId) {
-        logger.info("set current lookup key " + tenantId);
-        this.dataSourceKey.set(tenantId);
+    public void setDataSourceKey(boolean readOnly, long shardKey) {
+        logger.info("set current lookup key readOnly:" + readOnly + " shardKey:" + shardKey);
+        this.dataSourceKey.set(new DataSourceKey(readOnly, shardKey));
     }
 
 
@@ -45,6 +46,39 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
         logger.info("getting connection");
         Connection connection = super.getConnection();
         return connection;
+    }
+
+    public static class DataSourceKey {
+
+        private boolean readOnly = false;
+
+        private long shardKey;
+
+        public DataSourceKey() {
+            super();
+        }
+
+        public DataSourceKey(boolean readOnly, long shardKey) {
+            super();
+            this.readOnly = readOnly;
+            this.shardKey = shardKey;
+        }
+
+        public boolean isReadOnly() {
+            return readOnly;
+        }
+
+        public void setReadOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+        }
+
+        public long getShardKey() {
+            return shardKey;
+        }
+
+        public void setShardKey(long shardKey) {
+            this.shardKey = shardKey;
+        }
     }
 
 }

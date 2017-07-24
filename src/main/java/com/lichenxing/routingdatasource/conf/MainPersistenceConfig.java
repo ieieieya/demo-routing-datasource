@@ -32,7 +32,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager",
         basePackageClasses = ChatMessageRepository.class)
-@EnableTransactionManagement(proxyTargetClass = true, order = Ordered.LOWEST_PRECEDENCE)
+@EnableTransactionManagement(order = Ordered.LOWEST_PRECEDENCE)
 public class MainPersistenceConfig {
 
     @Bean
