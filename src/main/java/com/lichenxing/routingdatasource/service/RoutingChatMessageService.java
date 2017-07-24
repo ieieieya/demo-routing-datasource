@@ -5,6 +5,7 @@ import com.lichenxing.routingdatasource.annotation.ShardOn;
 import com.lichenxing.routingdatasource.routing.domain.RoutingChatMessage;
 import com.lichenxing.routingdatasource.routing.jpa.RoutingChatMessageRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
