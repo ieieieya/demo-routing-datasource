@@ -2,7 +2,6 @@ package com.lichenxing.routingdatasource.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -31,7 +30,7 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
         if (key == null) {
             return null;
         }
-        // TODO 这里的3是需要搞成自动配置的
+        // TODO 这里的3是需要搞成自动配置的 还要支持读写分离
         return key % 3;
     }
 
@@ -47,5 +46,6 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
         Connection connection = super.getConnection();
         return connection;
     }
+
 }
 
