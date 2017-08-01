@@ -2,8 +2,11 @@ package com.lichenxing.routingdatasource.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,10 +21,21 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
     private ThreadLocal<DataSourceKey> dataSourceKey = new ThreadLocal<>();
     private final Integer dbShardNum;
 
-    public MultipleDataSource(Integer dbShardNum, Object defaultTargetDataSource, Map<Object, Object> targetDataSources) {
+    public MultipleDataSource(Integer dbShardNum, Object defaultTargetDataSource, List<DataSource> writeDataSources, List<DataSource> readDataSources) {
         super();
         this.dbShardNum = dbShardNum;
         setDefaultTargetDataSource(defaultTargetDataSource);
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        if (writeDataSources != null) {
+            for (int i = 0; i < writeDataSources.size(); i++) {
+                targetDataSources.put("w_" + i, writeDataSources.get(i));
+            }
+        }
+        if (readDataSources != null) {
+            for (int i = 0; i < readDataSources.size(); i++) {
+                targetDataSources.put("r_" + i, readDataSources.get(i));
+            }
+        }
         setTargetDataSources(targetDataSources);
     }
 

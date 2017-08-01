@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author Chenxing Li
  * @date 19/07/2017 00:49
  */
-@Target({ElementType.METHOD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ShardOn {
