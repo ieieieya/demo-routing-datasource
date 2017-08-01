@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * HybridService
  *
@@ -74,11 +76,21 @@ public class HybridService {
         log.info("STEP1 save3 start tenantId:{} body:{}", tenantId, body);
 
         log.info("STEP2 saving to origin tenantId:{} body:{}", tenantId, body);
-        chatMessageService.saveChatMessage(tenantId, body + "chatchatchat");
+        ChatMessage chatMessage = chatMessageService.saveChatMessage(tenantId, body + "chatchatchat");
         log.info("STEP3 saving to routing tenantId:{} body:{}", tenantId, body);
         routingChatMessageService.saveRoutingChatMessage(tenantId, body + "_1", body + "_2", body + "_3");
 
         log.info("STEP4 save3 end tenantId:{} body:{}", tenantId, body);
+    }
+
+    public void findByTenantId(Integer tenantId) {
+        log.info("get tenantId:{}", tenantId);
+        List<ChatMessage> list1 = chatMessageService.findByTenantIdOrderByCreatedAtDesc(tenantId);
+        log.info("get from chat message end size:{}", list1.size());
+        log.info("get from chat message end content:{}", JSONUtil.mapToJsonString(list1));
+        List<RoutingChatMessage> list2 = routingChatMessageService.findByTenantIdOrderByCreatedAtDesc(tenantId);
+        log.info("get from routing chat message end size:{}", list2.size());
+        log.info("get from routing chat message end content:{}", JSONUtil.mapToJsonString(list2));
     }
 
 }

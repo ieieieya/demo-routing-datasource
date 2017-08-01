@@ -47,4 +47,10 @@ public class HybridController {
         return "OK";
     }
 
+    @RequestMapping(value = "/v5/{tenantId}/hybrid-find1", method = RequestMethod.GET)
+    public Object findByTenantId(@PathVariable("tenantId") Integer tenantId) {
+        hybridService.findByTenantId(tenantId);
+        return "OK";
+    }
+
 }

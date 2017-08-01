@@ -1,9 +1,8 @@
 package com.lichenxing.routingdatasource.rest;
 
-import com.lichenxing.routingdatasource.routing.domain.RoutingChatMessage;
+import com.lichenxing.routingdatasource.routing.domain.BodyMessage;
 import com.lichenxing.routingdatasource.service.RoutingChatMessageService;
 import com.lichenxing.routingdatasource.utils.JSONUtil;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,22 +27,15 @@ public class RoutingChatMessageController {
     }
 
     @RequestMapping(value = "/v5/{tenantId}/routing-messages", method = RequestMethod.POST)
-    public Object saveMessages(@PathVariable("tenantId") Integer tenantId, @RequestBody RoutingChatMessage chatMessage) {
+    public Object saveMessages(@PathVariable("tenantId") Integer tenantId, @RequestBody BodyMessage chatMessage) {
         log.info("POST /v5/{}/routing-messages body:{}", tenantId, JSONUtil.mapToJsonString(chatMessage));
         return routingChatMessageService.save(tenantId, chatMessage.getBody());
-    }
-
-    @Data
-    public static class ChatMessageUpdateBody {
-
-        private String body;
-
     }
 
     @RequestMapping(value = "/v5/{tenantId}/routing-messages/{msgId}", method = RequestMethod.PUT)
     public Object updateMessages(@PathVariable("tenantId") Integer tenantId,
                                  @PathVariable("msgId") String msgId,
-                                 @RequestBody ChatMessageUpdateBody updateBody) {
+                                 @RequestBody BodyMessage updateBody) {
         log.info("PUT /v5/{}/routing-messages/{} body:{}", tenantId, msgId, JSONUtil.mapToJsonString(updateBody));
         return routingChatMessageService.update(tenantId, msgId, updateBody.getBody());
     }

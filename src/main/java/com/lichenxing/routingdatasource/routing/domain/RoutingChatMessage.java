@@ -3,10 +3,7 @@ package com.lichenxing.routingdatasource.routing.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -28,7 +25,8 @@ public class RoutingChatMessage {
     private Integer tenantId;
 
     @Column(name = "body")
-    private String body;
+    @Convert(converter = BodyMessageAttributeConverter.class)
+    private BodyMessage body;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")
     @Column(name = "updatedAt")

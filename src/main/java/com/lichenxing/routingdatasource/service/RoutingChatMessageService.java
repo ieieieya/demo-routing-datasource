@@ -2,6 +2,7 @@ package com.lichenxing.routingdatasource.service;
 
 import com.lichenxing.routingdatasource.annotation.RoutingTransactional;
 import com.lichenxing.routingdatasource.annotation.ShardOn;
+import com.lichenxing.routingdatasource.routing.domain.BodyMessage;
 import com.lichenxing.routingdatasource.routing.domain.RoutingChatMessage;
 import com.lichenxing.routingdatasource.routing.jpa.RoutingChatMessageRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class RoutingChatMessageService {
         this.routingChatMessageRepository = routingChatMessageRepository;
     }
 
-    @RoutingTransactional
+//    @RoutingTransactional
     public List<RoutingChatMessage> findByTenantIdOrderByCreatedAtDesc(@ShardOn Integer tenantId) {
         return routingChatMessageRepository.findByTenantIdOrderByCreatedAtDesc(tenantId);
     }
@@ -43,7 +44,7 @@ public class RoutingChatMessageService {
             RoutingChatMessage routingChatMessage = new RoutingChatMessage();
             routingChatMessage.setMsgId(UUID.randomUUID().toString());
             routingChatMessage.setTenantId(tenantId);
-            routingChatMessage.setBody(body);
+            routingChatMessage.setBody(new BodyMessage(body));
             routingChatMessage.setCreatedAt(new Date());
             routingChatMessage.setUpdatedAt(new Date());
             routingChatMessageRepository.save(routingChatMessage);
@@ -62,7 +63,7 @@ public class RoutingChatMessageService {
         RoutingChatMessage routingChatMessage = new RoutingChatMessage();
         routingChatMessage.setMsgId(UUID.randomUUID().toString());
         routingChatMessage.setTenantId(tenantId);
-        routingChatMessage.setBody(body);
+        routingChatMessage.setBody(new BodyMessage(body));
         routingChatMessage.setCreatedAt(new Date());
         routingChatMessage.setUpdatedAt(new Date());
         routingChatMessageRepository.save(routingChatMessage);
@@ -75,7 +76,7 @@ public class RoutingChatMessageService {
         if (routingChatMessage == null) {
             return null;
         }
-        routingChatMessage.setBody(body);
+        routingChatMessage.setBody(new BodyMessage(body));
         routingChatMessage.setUpdatedAt(new Date());
         routingChatMessageRepository.save(routingChatMessage);
         return routingChatMessage;

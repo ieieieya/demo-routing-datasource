@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -40,5 +41,9 @@ public class ChatMessageService {
             throw new IllegalArgumentException("ChatMessage test rollback");
         }
         return chatMessage;
+    }
+
+    public List<ChatMessage> findByTenantIdOrderByCreatedAtDesc(Integer tenantId) {
+        return chatMessageRepository.findByTenantIdOrderByCreatedAtDesc(tenantId);
     }
 }
