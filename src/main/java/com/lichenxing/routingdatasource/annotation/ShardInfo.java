@@ -1,20 +1,20 @@
 package com.lichenxing.routingdatasource.annotation;
 
+import org.springframework.context.annotation.Import;
+
 import java.lang.annotation.*;
 
 /**
- * ShardOn
+ * ShardInfo
  *
  * @author Chenxing Li
- * @date 19/07/2017 00:49
+ * @date 01/08/2017 19:11
  */
-@Target({ElementType.PARAMETER})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ShardOn {
+public @interface ShardInfo {
 
     String value() default "";
-
-    boolean readOnly() default false;
 
 }

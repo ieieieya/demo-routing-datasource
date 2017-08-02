@@ -48,4 +48,25 @@ public class RoutingChatMessageController {
         return "OK";
     }
 
+    @RequestMapping(value = "/v5/test1", method = RequestMethod.GET)
+    public Object test1() {
+        log.info("GET /v5/test1");
+        routingChatMessageService.test1();
+        return "OK";
+    }
+
+    @RequestMapping(value = "/v5/test2", method = RequestMethod.GET)
+    public Object test2() {
+        log.info("GET /v5/test2");
+        routingChatMessageService.test2(1);
+        return "OK";
+    }
+
+    @RequestMapping(value = "/v5/test5", method = RequestMethod.GET)
+    public Object test5() {
+        log.info("GET /v5/test5");
+        routingChatMessageService.test5(2);
+        return "OK";
+    }
+
 }

@@ -2,6 +2,7 @@ package com.lichenxing.routingdatasource.rest;
 
 import com.lichenxing.routingdatasource.domain.ChatMessage;
 import com.lichenxing.routingdatasource.jpa.ChatMessageRepository;
+import com.lichenxing.routingdatasource.service.ChatMessageService;
 import com.lichenxing.routingdatasource.utils.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class ChatMessageController {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
+    @Autowired
+    private ChatMessageService chatMessageService;
+
     @RequestMapping(value = "/v5/{tenantId}/messages", method = RequestMethod.GET)
     public Object getMessages(@PathVariable("tenantId") Integer tenantId) {
         log.info("GET /v5/{}/messages", tenantId);
@@ -39,5 +43,20 @@ public class ChatMessageController {
         chatMessage.setUpdatedAt(new Date());
         chatMessageRepository.save(chatMessage);
         return chatMessage;
+    }
+
+
+    @RequestMapping(value = "/v5/test3", method = RequestMethod.GET)
+    public Object test3() {
+        log.info("GET /v5/test3");
+        chatMessageService.test3();
+        return "OK";
+    }
+
+    @RequestMapping(value = "/v5/test4", method = RequestMethod.GET)
+    public Object test4() {
+        log.info("GET /v5/test4");
+        chatMessageService.test4();
+        return "OK";
     }
 }

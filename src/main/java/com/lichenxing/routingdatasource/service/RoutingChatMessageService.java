@@ -1,12 +1,12 @@
 package com.lichenxing.routingdatasource.service;
 
 import com.lichenxing.routingdatasource.annotation.RoutingTransactional;
+import com.lichenxing.routingdatasource.annotation.ShardInfo;
 import com.lichenxing.routingdatasource.annotation.ShardOn;
 import com.lichenxing.routingdatasource.routing.domain.BodyMessage;
 import com.lichenxing.routingdatasource.routing.domain.RoutingChatMessage;
 import com.lichenxing.routingdatasource.routing.jpa.RoutingChatMessageRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
+@ShardInfo
 public class RoutingChatMessageService {
 
     private final RoutingChatMessageRepository routingChatMessageRepository;
@@ -80,6 +81,21 @@ public class RoutingChatMessageService {
         routingChatMessage.setUpdatedAt(new Date());
         routingChatMessageRepository.save(routingChatMessage);
         return routingChatMessage;
+    }
+
+    public void test1() {
+        log.info("######### test1");
+    }
+
+    public void test2(@ShardOn Integer tenantId) {
+        log.info("######### test2");
+        throw new IllegalArgumentException("test2");
+    }
+
+    @RoutingTransactional
+    public void test5(@ShardOn Integer tenantId) {
+        log.info("######### test5");
+        throw new IllegalArgumentException("test5");
     }
 
 

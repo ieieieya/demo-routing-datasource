@@ -56,3 +56,13 @@ curl -X PUT \
 curl -X DELETE \
   http://localhost:8070/v5/1412/routing-messages/a8289de7-8c22-4fe0-9c2d-f8eccd035ce0 \
 ```
+
+## 更新
+
+### 2017-07-24
+
+初始版本完成，支持基础分库功能
+
+### 2017-08-02
+
+支持全注解配置，支持读写分离

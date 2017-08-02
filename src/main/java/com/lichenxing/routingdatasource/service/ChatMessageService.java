@@ -46,4 +46,16 @@ public class ChatMessageService {
     public List<ChatMessage> findByTenantIdOrderByCreatedAtDesc(Integer tenantId) {
         return chatMessageRepository.findByTenantIdOrderByCreatedAtDesc(tenantId);
     }
+
+    public void test3() {
+        log.info("######### test3");
+        throw new IllegalArgumentException("test3");
+    }
+
+    @Transactional
+    public void test4() {
+        log.info("######### test4");
+        throw new IllegalArgumentException("test4");
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.lichenxing.routingdatasource;
 
+import com.lichenxing.routingdatasource.annotation.EnableShard;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -16,6 +17,7 @@ import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfigu
 				DataSourceTransactionManagerAutoConfiguration.class,
 				TransactionAutoConfiguration.class
 		})
+@EnableShard
 public class DemoRoutingDatasourceApplication {
 
 	public static void main(String[] args) {
