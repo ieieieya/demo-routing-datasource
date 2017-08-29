@@ -50,14 +50,14 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
     }
 
     public void setDataSourceKey(boolean readOnly, long shardKey) {
-        logger.info("set current lookup key readOnly:" + readOnly + " shardKey:" + shardKey);
+        logger.debug("set current lookup key readOnly:" + readOnly + " shardKey:" + shardKey);
         this.dataSourceKey.set(new DataSourceKey(readOnly, shardKey));
     }
 
 
     @Override
     public Connection getConnection() throws SQLException {
-        logger.info("getting connection");
+        logger.debug("getting connection");
         Connection connection = super.getConnection();
         return connection;
     }

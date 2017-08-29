@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication(
 		exclude = {
@@ -18,6 +19,7 @@ import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfigu
 				TransactionAutoConfiguration.class
 		})
 @EnableShard
+@EnableDiscoveryClient
 public class DemoRoutingDatasourceApplication {
 
 	public static void main(String[] args) {

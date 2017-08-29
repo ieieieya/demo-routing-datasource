@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    consul:
+      discovery:
+        health-check-path: ${management.context-path}/health
+        health-check-interval: 5s
+        instance-id: ${spring.application.name}-${server.port}-${random.long[123456789,987654321]}
+        tags: group=a, ver=a-1
+  application:
+    name: DemoRoutingDatasourceServer
