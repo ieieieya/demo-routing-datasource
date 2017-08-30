@@ -3,8 +3,9 @@ spring:
     consul:
       discovery:
         health-check-path: ${management.context-path}/health
-        health-check-interval: 5s
+        health-check-interval: 15s
         instance-id: ${spring.application.name}-${server.port}-${random.long[123456789,987654321]}
         tags: group=a, ver=a-1
+      enabled: true
   application:
     name: DemoRoutingDatasourceServer

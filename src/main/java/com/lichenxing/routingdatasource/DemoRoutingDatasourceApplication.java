@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication(
 		exclude = {
@@ -20,6 +22,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 		})
 @EnableShard
 @EnableDiscoveryClient
+@EnableFeignClients
+@ComponentScan("com.lichenxing.routingdatasource")
 public class DemoRoutingDatasourceApplication {
 
 	public static void main(String[] args) {
