@@ -3,17 +3,16 @@ package com.lichenxing.routingdatasource.service;
 import com.lichenxing.routingdatasource.feign.UserFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerRequest;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerRequestFactory;
-import org.springframework.cloud.netflix.ribbon.apache.RibbonLoadBalancingHttpClient;
+import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * TestService
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class TestService {
+public class TestService implements ApplicationListener<ApplicationPreparedEvent> {
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -36,6 +35,13 @@ public class TestService {
 
     @Autowired
     private UserFeignClient userFeignClient;
+
+    public void testhaha() {
+        log.info("#################################### hahahaha start");
+        ResponseEntity<Object> health = userFeignClient.health();
+        log.info("something:{}", health);
+        log.info("#################################### hahahaha end");
+    }
 
 
     public void test(String instanceId) throws IOException {
@@ -55,4 +61,17 @@ public class TestService {
         ResponseEntity<Object> user = userFeignClient.getUser(username);
         log.info("get user end username:{} status:{} body:{}", username, user.getStatusCode(), user.getBody());
     }
+
+    @Override
+    public void onApplicationEvent(ApplicationPreparedEvent event) {
+        log.info("####### ####### ####### ####### ####### ####### #######  Application prepared event");
+        try {
+            testhaha();
+            Thread.sleep(5000L);
+        log.info("####### ####### ####### ####### ####### ####### #######  Application prepared event end");
+        } catch (Exception e) {
+            log.error("start error", e);
+        }
+    }
+
 }

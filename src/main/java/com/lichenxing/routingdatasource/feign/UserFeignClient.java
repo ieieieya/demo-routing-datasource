@@ -17,4 +17,7 @@ public interface UserFeignClient {
     @RequestMapping(path = "/v5/user")
     ResponseEntity<Object> getUser(@RequestParam(name = "username", required = false) String username);
 
+    @RequestMapping(path = "/management/health")
+    ResponseEntity<Object> health();
+
 }
