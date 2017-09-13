@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * LifeIsHardService
+ * DelayStopService
  *
  * @author Chenxing Li
- * @date 07/09/2017 21:01
+ * @date 13/09/2017 19:13
  */
 @Slf4j
 @Service
-public class LifeIsHardService implements SmartLifecycle {
+public class DelayStopService implements SmartLifecycle {
 
     private AtomicBoolean running = new AtomicBoolean(false);
 
@@ -25,23 +25,29 @@ public class LifeIsHardService implements SmartLifecycle {
 
     @Override
     public void stop(Runnable callback) {
-        log.info("##### #### STOPPPPPPPPPPPPPPPPPP WITH callback");
+        log.info("############## DelayStopService STOPPPPPPPPPPPPPPPPPP WITH callback");
+        stop();
         callback.run();
         running.set(false);
-        log.info("##### #### STOPPPPPPPPPPPPPPPPPP end WITH callback");
+        log.info("############## DelayStopService STOPPPPPPPPPPPPPPPPPP end WITH callback");
     }
 
     @Override
     public void start() {
-        log.info("##### #### STARTTTTTTTTTTTTTTTT");
+        log.info("############## DelayStopService STARTTTTTTTTTTTTTTTT");
         running.set(true);
     }
 
     @Override
     public void stop() {
-        log.info("##### #### STOPPPPPPPPPPPPPPPPPP");
+        log.info("############## DelayStopService STOPPPPPPPPPPPPPPPPPP");
         running.set(false);
-        log.info("##### #### STOPPPPPPPPPPPPPPPPPP end");
+        try {
+            Thread.sleep(20000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("############## DelayStopService STOPPPPPPPPPPPPPPPPPP end");
     }
 
     @Override
@@ -51,7 +57,6 @@ public class LifeIsHardService implements SmartLifecycle {
 
     @Override
     public int getPhase() {
-        return 200;
+        return -200;
     }
-
 }
