@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Slf4j
 @RestController
-public class TestController {
+public class TestController extends AbstractController {
 
     @Autowired
     private TestService testService;

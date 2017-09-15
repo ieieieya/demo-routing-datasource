@@ -59,7 +59,7 @@ public class TestService implements ApplicationListener<ApplicationPreparedEvent
         ServiceInstance choose = loadBalancerClient.choose(instanceId);
         log.info("host:{}", choose.getHost());
         log.info("port:{}", choose.getPort());
-        loadBalancerClient.execute(instanceId, loadBalancerRequestFactory.createRequest(null, null, null));
+//        loadBalancerClient.execute(instanceId, loadBalancerRequestFactory.createRequest(null, null, null));
     }
 
     public void getUser(String username) {
