@@ -20,10 +20,12 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
 
     private ThreadLocal<DataSourceKey> dataSourceKey = new ThreadLocal<>();
     private final Integer dbShardNum;
+    private final Integer tableShardNum;
 
-    public MultipleDataSource(Integer dbShardNum, Object defaultTargetDataSource, List<DataSource> writeDataSources, List<DataSource> readDataSources) {
+    public MultipleDataSource(Integer dbShardNum, Integer tableShardNum, Object defaultTargetDataSource, List<DataSource> writeDataSources, List<DataSource> readDataSources) {
         super();
         this.dbShardNum = dbShardNum;
+        this.tableShardNum = tableShardNum;
         setDefaultTargetDataSource(defaultTargetDataSource);
         Map<Object, Object> targetDataSources = new HashMap<>();
         if (writeDataSources != null) {
@@ -45,7 +47,7 @@ public class MultipleDataSource extends AbstractRoutingDataSource {
         if (key == null) {
             return null;
         }
-        long remainder = key.getShardKey() % dbShardNum;
+        long remainder = key.getShardKey() % (dbShardNum * tableShardNum) / tableShardNum;
         return key.isReadOnly() ? "r_" + remainder : "w_" + remainder;
     }
 

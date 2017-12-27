@@ -51,7 +51,7 @@ public class RoutingDataSourceConfiguration {
     @Bean
     public DataSource routingDataSource(DataSource dataSource) {
         List<DataSource> writeDataSourceList = buildRoutingDataSource(writeUrlArr, writeUsernameArr, writePasswordArr, driverClassName);
-        return new MultipleDataSource(writeUrlArr.length, dataSource, writeDataSourceList, null);
+        return new MultipleDataSource(writeUrlArr.length, 3, dataSource, writeDataSourceList, null);
     }
 
 }
