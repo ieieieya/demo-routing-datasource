@@ -20,6 +20,7 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
+@RequestMapping(path = "/demo-routing")
 public class UserController {
 
     @RequestMapping(path = "/v5/user")

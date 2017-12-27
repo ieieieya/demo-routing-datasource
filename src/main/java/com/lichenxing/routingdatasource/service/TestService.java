@@ -73,7 +73,7 @@ public class TestService implements ApplicationListener<ApplicationPreparedEvent
         log.info("##############  Application prepared event");
         try {
 //            testhaha();
-            Thread.sleep(5000L);
+//            Thread.sleep(5000L);
             log.info("##############  Application prepared event end");
         } catch (Exception e) {
             log.error("start error", e);

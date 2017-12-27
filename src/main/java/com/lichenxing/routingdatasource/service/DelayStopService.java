@@ -42,11 +42,11 @@ public class DelayStopService implements SmartLifecycle {
     public void stop() {
         log.info("############## DelayStopService STOPPPPPPPPPPPPPPPPPP");
         running.set(false);
-        try {
-            Thread.sleep(20000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(20000L);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         log.info("############## DelayStopService STOPPPPPPPPPPPPPPPPPP end");
     }
 
